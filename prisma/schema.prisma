@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Venue {
+  id      Int     @id @default(autoincrement())
+  nama    String
+  alias   String? @unique
+  alamat  String
+  noIzin  String
+  API     String
+  PIC     String
+  jabatan String
+
+  Pameran Pameran[]
+}
+
+model Pameran {
+  id              Int      @id @default(autoincrement())
+  nama            String
+  alias           String?
+  tahun           String
+  tanggalMulai    DateTime
+  tanggalBerakhir DateTime
+
+  // FK
+  idVenue Int
+  venue   Venue @relation(fields: [idVenue], references: [id])
+
+  // Opposite fields
+  job Job[]
+}
+
+enum Progres {
+  ONBC23
+  ONBC25
+  ONBC30
+}
+
+model Negara {
+  id     Int    @id @default(autoincrement())
+  nama   String
+  region String
+  kode   String @unique
+
+  // Opposite fields
+  Shipper Shipper[]
+}
+
+model Shipper {
+  id         Int     @id @default(autoincrement())
+  nama       String
+  alias      String?
+  alamat     String
+  // FK
+  idNegara   Int
+  asalNegara Negara  @relation(fields: [idNegara], references: [id])
+
+  Job Job[]
+}
+
+enum ShipmentType {
+  FCL
+  LCL
+}
+
+enum JenisKemasan {
+  PACKAGES
+  PALLETE
+}
+
+model KargoInfo {
+  id                Int          @id @default(autoincrement())
+  nomorBL           String       @unique
+  tanggalBL         DateTime
+  shipmentType      ShipmentType
+  voyage            String
+  vessel            String
+  portKeberangkatan String
+  portKedatangan    String
+  ETD               DateTime
+  ETA               DateTime
+  jenisKemasan      JenisKemasan
+  totalKemasan      Int
+  weight            Int
+  deskripsiBarang   String
+  volume            Int
+
+  // Oppsite fields 
+  Job Job[]
+}
+
+model Job {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  progres   Progres
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // FK
+  idPameran Int
+  pameran   Pameran @relation(fields: [idPameran], references: [id])
+
+  idShipper Int
+  shipper   Shipper @relation(fields: [idShipper], references: [id])
+
+  idKargo   Int
+  kargoInfo KargoInfo @relation(fields: [idKargo], references: [id])
+}
