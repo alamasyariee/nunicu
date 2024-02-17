@@ -12,23 +12,23 @@ import { Button } from "@/components/ui/button";
 import prisma from "../lib/prisma";
 import AddPameran from "./addPameran";
 
-const jobQuery = async () => {
-    const res = await prisma.negara.findMany({})
+// const jobQuery = async () => {
+//     const res = await prisma.negara.findMany({})
 
-    return res
-}
+//     return res
+// }
 
-const pameranQuery = async () => {
-    const res = await prisma.pameran.findMany({})
+// const pameranQuery = async () => {
+//     const res = await prisma.pameran.findMany({})
 
-    return res
-}
+//     return res
+// }
 
 export default async function Home () {
 
-    const [ job, pameran ] = await Promise.all([ jobQuery(), pameranQuery() ])
+    // const [ job, pameran ] = await Promise.all([ jobQuery(), pameranQuery() ])
 
-    console.log(job);
+    // console.log(job);
 
     return (
         <>

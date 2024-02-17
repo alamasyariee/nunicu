@@ -9,26 +9,10 @@ import {
 } from "@/components/ui/table"
 
 import { Button } from "@/components/ui/button";
-import prisma from "./lib/prisma";
-import Image from "next/image";
 
-const jobQuery = async () => {
-  const res = await prisma.negara.findMany({})
-
-  return res
-}
-
-const pameranQuery = async () => {
-  const res = await prisma.pameran.findMany({})
-
-  return res
-}
 
 export default async function Home () {
 
-  const [ job, pameran ] = await Promise.all([ jobQuery(), pameranQuery() ])
-
-  console.log(job);
 
   return (
     <>
